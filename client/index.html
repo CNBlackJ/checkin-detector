@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<style>
+			.booth {
+				width:400px;
+				background:#ccc;
+				border: 10px solid #ddd;
+				margin: 0 auto;
+			}
+		</style>
+</head>
+<body>
+		<div id="app" class="booth">
+				<video ref="video" id="video" width="400" height="300" :src="videoSrc"></video>
+				<canvas ref="canvas"></canvas>
+				<button @click="snap">拍照</button>
+				<button @click="savePhoto" v-if="isSnap">保存</button>
+				<p v-if="isSaved">
+					{{feedback}}
+				</p>
+		</div>
+</body>
+<script>
+	var app = new Vue({
+		el: '#app',
+		data: {
+			videoSrc: '',
+			base64Img: '',
+			feedback: '重新拍照',
+			isSnap: false,
+			isSaved: false
+		},
+		created: function () {
+			this.initVideo()
+		},
+		methods: {
+			initVideo () {
+				const mediaDevices = navigator.mediaDevices.getUserMedia({ audio: false, video: { width: 300, height: 400 } })
+				mediaDevices.then(mediaStream => {
+					const video = this.$refs.video
+					video.src = window.URL.createObjectURL(mediaStream)
+					video.onloadedmetadata = (e) => { video.play() }
+					this.video = video
+					this.track = mediaStream.getTracks()[0]
+				}).catch(err => {
+					console.log('err.message' + err.name)
+				})
+			},
+			snap () {
+				let canvas = this.$refs.canvas
+				let context = canvas.getContext('2d')
+				let width = 300
+				let height = 400
+				canvas.width = width
+				canvas.height = height
+				context.drawImage(this.video, 0, 0, width, height)
+				this.base64Img = canvas.toDataURL('image/png')
+				if (this.base64Img) this.isSnap = true
+			},
+			async savePhoto () {
+				const resp = await axios({
+					method: 'post',
+					baseURL: 'http://localhost:3000',
+					url: '/api/photos',
+					data: {
+						base64Img: this.base64Img,
+					}
+				})
+				console.log(resp)
+				if (resp.status === 200) {
+					this.isSaved = resp.data.statusCode === 2001
+					if(this.isSaved) {
+						this.feedback = '匹配成功'
+					}
+				}
+			}
+		}
+	})
+</script>
+</html>
