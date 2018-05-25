@@ -3,9 +3,12 @@ const router = require('koa-router')()
 const koaBody = require('koa-body')
 const cors = require('koa-cors')
 const fs = require('fs')
+const axios = require('axios')
 
+const config = require('./config')
 const faceDetect = require('./faceTools/faceDetect')
 const faceMatch = require('./faceTools/faceMatch')
+const idcardDetect = require('./ordTools/idcardDetect')
 
 const app = new Koa()
 
@@ -24,10 +27,13 @@ async function create (ctx) {
       max_face_num: 3,
       face_type: 'LIVE'
     }
-    console.log(photoFilename)
     const faceRes = await faceDetect(photoFilename, faceDetectOptions)
     if (!faceRes) throw new Error('Cannot detect face.')
     const idCardImg = getIdCard(441)
+    const imgCardInfo = await idcardDetect(idCardImg)
+    const searchCardInfo = await getIdCardInfo(imgCardInfo['公民身份号码'])
+    if (!searchCardInfo) throw new Error('Idcard does not exist!!')
+
     const imgs = [idCardImg, photoFilename]
     const score = await faceMatch(imgs)
     const isMatch = score >= 50
@@ -59,6 +65,20 @@ function getIdCard (id = 441) {
     443: 'c.png'
   }
   return idCardImg[id] || ''
+}
+
+async function getIdCardInfo (cardNo = '440224199410201791') {
+  const key = config.JUHE_KEY
+  const resp = await axios({
+    method: 'get',
+    baseURL: 'http://apis.juhe.cn',
+    url: `/idcard/index?key=${key}&cardno=${cardNo}`
+  })
+  if (resp.data.resultcode === '200') {
+    return resp.data.result
+  } else {
+    return ''
+  }
 }
 
 app.listen(3000)
