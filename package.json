@@ -1,5 +1,5 @@
 {
-  "name": "baidu-face",
+  "name": "checkin-detective",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,8 +7,8 @@
     "dev": "open client/index.html && nodemon server/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["check-in", "face", "recognize"],
+  "author": "VinliCheung",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
