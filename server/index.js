@@ -67,7 +67,7 @@ function getIdCard (id = 441) {
   return idCardImg[id] || ''
 }
 
-async function getIdCardInfo (cardNo = '440224199410201791') {
+async function getIdCardInfo (cardNo) {
   const key = config.JUHE_KEY
   const resp = await axios({
     method: 'get',

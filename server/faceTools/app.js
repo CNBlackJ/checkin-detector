@@ -34,4 +34,4 @@ const userId = '1'
 const imgPaths = ['face_1527213311431.png', 'face_1527213393044.png']
 // faceMatch(imgPaths).then(res => console.log(res))
 
-// facePolice('face_1527213311431.png', '440224199410201791', '张业生')
+// facePolice('face_1527213311431.png', '123123123', '张业生')

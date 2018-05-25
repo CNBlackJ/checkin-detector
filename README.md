@@ -5,22 +5,24 @@
 
 ### Get Start
 
-- git clone git@github.com:CNBlackJ/checkin-detector.git && cd checkin-detector
-- npm install
-- add config
-  ```
-  // ./server/config/{{process.env.NODE_ENV}}.js
-  module.exports =  {
-	  APP_ID: 'baidu app id',
-	  API_KEY: 'baidu api key',
-	  SECRET_KEY: 'baidu secrect key',
-	  JUHE_KEY: 'juhe api key'
-	}
+`$ git clone git@github.com:CNBlackJ/checkin-detector.git && cd checkin-detector`
+`$ npm install`
+```
+// add config
+// ./server/config/{{process.env.NODE_ENV}}.js
+module.exports =  {
+  APP_ID: 'baidu app id',
+  API_KEY: 'baidu api key',
+  SECRET_KEY: 'baidu secrect key',
+  JUHE_KEY: 'juhe api key'
+}
 
-  ```
+```
+`$ npm run dev`
+
+- 参考资料
   - [百度人脸识别](https://ai.baidu.com/docs#/Begin/top)
   - [聚合身份查询](https://www.juhe.cn/docs/api/id/38)
-- npm run dev
 
 ### TODO 
 
