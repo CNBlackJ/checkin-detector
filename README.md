@@ -6,8 +6,10 @@
 ### Get Start
 
 `$ git clone git@github.com:CNBlackJ/checkin-detector.git && cd checkin-detector`
+
 `$ npm install`
-```
+
+```javascript
 // add config
 // ./server/config/{{process.env.NODE_ENV}}.js
 module.exports =  {
@@ -18,6 +20,7 @@ module.exports =  {
 }
 
 ```
+
 `$ npm run dev`
 
 - 参考资料
