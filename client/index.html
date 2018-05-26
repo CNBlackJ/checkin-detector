@@ -22,7 +22,7 @@
 				<canvas ref="canvas"></canvas>
 				<button @click="snap">拍照</button>
 				<button @click="savePhoto" v-if="isSnap">保存</button>
-				<p v-if="isSaved">
+				<p>
 					{{feedback}}
 				</p>
 		</div>
@@ -33,9 +33,9 @@
 		data: {
 			videoSrc: '',
 			base64Img: '',
-			feedback: '重新拍照',
+			feedback: '请拍照~',
 			isSnap: false,
-			isSaved: false
+			isMatched: false
 		},
 		created: function () {
 			this.initVideo()
@@ -63,6 +63,7 @@
 				context.drawImage(this.video, 0, 0, width, height)
 				this.base64Img = canvas.toDataURL('image/png')
 				if (this.base64Img) this.isSnap = true
+				if (this.isSnap) this.feedback = '检测中...'
 			},
 			async savePhoto () {
 				const resp = await axios({
@@ -74,11 +75,10 @@
 					}
 				})
 				console.log(resp)
+				if (resp.status !== 200) this.feedback = '重新拍照'
 				if (resp.status === 200) {
-					this.isSaved = resp.data.statusCode === 2001
-					if(this.isSaved) {
-						this.feedback = '匹配成功'
-					}
+					this.isMatched = resp.data.statusCode === 2001
+					this.feedback = this.isMatched ? '匹配成功' : '重新拍照'
 				}
 			}
 		}
