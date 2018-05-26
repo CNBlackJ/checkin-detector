@@ -4,10 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "open client/index.html && nodemon server/",
+    "dev": "nodemon server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["check-in", "face", "recognize"],
+  "keywords": [
+    "check-in",
+    "face",
+    "recognize"
+  ],
   "author": "VinliCheung",
   "license": "ISC",
   "dependencies": {
@@ -16,7 +20,6 @@
     "koa": "^2.5.1",
     "koa-body": "^2.5.0",
     "koa-cors": "0.0.16",
-    "koa-router": "^7.4.0",
-    "node-webcam": "^0.4.3"
+    "koa-router": "^7.4.0"
   }
 }
