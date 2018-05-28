@@ -1,5 +1,6 @@
 const fs = require('fs')
 const axios = require('axios')
+const signale = require('signale')
 
 const config = require('../../config')
 const faceDetect = require('../../faceTools/faceDetect')
@@ -43,6 +44,7 @@ async function getIdCardInfo (cardNo) {
 module.exports = {
   create: async(ctx) => {
     try {
+      signale.watch('检测中...')
       const { base64Img } = ctx.request.body
       const photoFilename = savePhoto(base64Img)
       const faceDetectOptions = {
@@ -60,12 +62,13 @@ module.exports = {
       const imgs = [idCardImg, photoFilename]
       const score = await faceMatch(imgs)
       const isMatch = score >= 50
-      console.log(score)
+      signale.success(`人类匹配度: ${score}%`)
       ctx.body = {
         statusCode: isMatch ? 2001 : 4001,
         result: isMatch ? 'Success to match.' : 'Fail to match.'
       }
     } catch (error) {
+      signale.fatal(error)
       ctx.body = error
     }
   }

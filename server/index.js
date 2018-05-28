@@ -3,6 +3,7 @@ const router = require('koa-router')()
 const koaBody = require('koa-body')
 const cors = require('koa-cors')
 const fs = require('fs')
+const signale = require('signale')
 
 const controller = require('./controller')
 
@@ -21,5 +22,5 @@ async function home (ctx) {
 }
 
 app.listen(3000, () => {
-  console.log('Server is running at http://localhost:3000')
+  signale.success('Server is running at http://localhost:3000')
 })

@@ -20,6 +20,7 @@
     "koa": "^2.5.1",
     "koa-body": "^2.5.0",
     "koa-cors": "0.0.16",
-    "koa-router": "^7.4.0"
+    "koa-router": "^7.4.0",
+    "signale": "^1.1.0"
   }
 }
